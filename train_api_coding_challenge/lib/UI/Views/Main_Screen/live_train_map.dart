@@ -1,8 +1,10 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:train_api_coding_challenge/UI/Core/Shared_Widgets/main_scaffold.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:train_api_coding_challenge/UI/Views/Main_Screen/view_models/live_train_map_view_model.dart';
 
 class LiveTrainMap extends StatefulWidget {
 
@@ -30,6 +32,7 @@ class _LiveTrainMapState extends State<LiveTrainMap>{
 
   @override
   Widget build(BuildContext context) {
+     final vm = context.watch<LiveTrainmapViewModel>();
     return TrainAppScaffold(
       appTitle: "Train Live Map", 
       widgetBody: GoogleMap(
