@@ -3,21 +3,16 @@ import 'package:flutter/material.dart';
 class TrainAppTitle extends StatelessWidget implements PreferredSizeWidget {
   final VoidCallback? navigationCallback;
   final String appTitle;
-  final IconData navigationIcon;
+
   final List<Widget>? actionlist;
-  final bool burgerNav;
-  final bool isBottom;
 
 
   const TrainAppTitle (
     {
     super.key,
     required this.appTitle,
-    required this.burgerNav,
     this.navigationCallback,
-    this.navigationIcon = Icons.arrow_back,
     this.actionlist,
-    this.isBottom = false,
 
     }
   );
