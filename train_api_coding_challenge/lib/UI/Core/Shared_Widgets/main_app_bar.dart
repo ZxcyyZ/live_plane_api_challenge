@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
-class TrainAppTitle extends StatelessWidget implements PreferredSizeWidget {
+class PlaneAppTitle extends StatelessWidget implements PreferredSizeWidget {
   final VoidCallback? navigationCallback;
   final String appTitle;
 
   final List<Widget>? actionlist;
 
 
-  const TrainAppTitle (
+  const PlaneAppTitle (
     {
     super.key,
     required this.appTitle,

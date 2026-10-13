@@ -8,12 +8,12 @@
 // import 'package:flutter/material.dart';
 // import 'package:flutter_test/flutter_test.dart';
 
-// import 'package:train_api_coding_challenge/main.dart';
+// import 'package:plane_api_coding_challenge/main.dart';
 
 // void main() {
 //   testWidgets('Counter increments smoke test', (WidgetTester tester) async {
 //     // Build our app and trigger a frame.
-//     await tester.pumpWidget(const LiveTrainMap());
+//     await tester.pumpWidget(const LivePlaneMap());
 
 //     // Verify that our counter starts at 0.
 //     expect(find.text('0'), findsOneWidget);

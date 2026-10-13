@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'main_app_bar.dart';
 
-class TrainAppScaffold extends StatelessWidget {
+class PlaneAppScaffold extends StatelessWidget {
   final String appTitle;
   final Widget widgetBody;
 
-  const TrainAppScaffold ({
+  const PlaneAppScaffold ({
     super.key,
     required this.appTitle,
     required this.widgetBody,
@@ -15,7 +15,7 @@ class TrainAppScaffold extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: TrainAppTitle(
+      appBar: PlaneAppTitle(
         appTitle: appTitle,
       ),
       backgroundColor: Colors.black12,

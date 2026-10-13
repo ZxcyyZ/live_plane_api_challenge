@@ -6,18 +6,18 @@
     "configurations": [
         
         {
-            "name": "train_api_coding_challenge",
+            "name": "plane_api_coding_challenge",
             "request": "launch",
             "type": "dart"
         },
         {
-            "name": "train_api_coding_challenge (profile mode)",
+            "name": "plane_api_coding_challenge (profile mode)",
             "request": "launch",
             "type": "dart",
             "flutterMode": "profile"
         },
         {
-            "name": "train_api_coding_challenge (release mode)",
+            "name": "plane_api_coding_challenge (release mode)",
             "request": "launch",
             "type": "dart",
             "flutterMode": "release"
