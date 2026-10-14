@@ -41,21 +41,65 @@ class LivePlanemapViewModel extends ChangeNotifier {
     }
   }
 
-  Future<void> buildMarkers(MarkerWidgetsController markerWidgetsController) async{
+  Future<void> buildMarkers(
+    MarkerWidgetsController markerWidgetsController,
+    Set<Marker> markers,
+    LatLngBounds bounds,
+  ) async {
+
+    final currentIds = <MarkerId> {
+      for(final plane in planes)
+        if (plane.icao24 != null && plane.latitude != null && plane.longitude != null)
+          MarkerId(plane.icao24!)
+    };
+
+    final notInBounds = markerWidgetsController.markerIds.where(
+      (markerId) => !currentIds.contains(markerId)).toList();
+    if(notInBounds.isNotEmpty) markerWidgetsController.bulkRemoveMarker(notInBounds);
+
     for(final plane in planes){
-      if(plane.latitude != null && plane.longitude != null){
+      if(plane.icao24 == null || plane.latitude == null || plane.longitude == null) continue;
+
+      final Icon icon = Icon(Icons.flight, color: Colors.black, size: 30);
+      final planeId = MarkerId(plane.icao24!);
+      final existingPlane = markerWidgetsController.markerForId(planeId);
+
+      if(existingPlane != null) {
+        markerWidgetsController.updateMarker(
+          existingPlane.copyWith(
+            positionParam: LatLng(plane.latitude!, plane.longitude!),
+            rotationParam: plane.true_track ?? 0,
+          ),
+          animated: false,
+        );
+      } else{
         markerWidgetsController.addMarkerWidget(
           markerWidget: MarkerWidget(
-            markerId: MarkerId(plane.icao24 ?? ''),
-            child: Icon(Icons.flight, color: Colors.black, size: 25,),
+            markerId: planeId,
+            child: icon,
           ), 
           marker: Marker(
-            markerId: MarkerId(plane.icao24 ?? ''),
+            markerId: planeId,
             position: LatLng(plane.latitude!, plane.longitude!),
-            rotation: plane.true_track!
+            rotation: plane.true_track ?? 0
             )
           );
       }
     }
+   
+  }
+
+  Future<void> removeMarkers(
+    MarkerWidgetsController markerWidgetsController,
+    Set<Marker> markers,
+    LatLngBounds bounds,
+  ) async {
+    if (markers.isEmpty) return;
+    markerWidgetsController.bulkRemoveMarker(markerWidgetsController.markerIds);
+    // for(final marker in markers){
+    //   if(!bounds.contains(marker.position)){
+    //     print("Removing marker");
+    //     markerWidgetsController.removeMarker(marker.markerId);
+    //   }
   }
 }

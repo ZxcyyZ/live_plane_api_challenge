@@ -43,7 +43,7 @@ class _LivePlaneMapState extends State<LivePlaneMap>{
     final LivePlanemapViewModel vm = context.watch<LivePlanemapViewModel>();
     return PlaneAppScaffold(
       appTitle: "Plane Live Map", 
-      widgetBody:  Stack(
+      widgetBody: Stack(
         children: [
            if (_loadingMap)
             _loadingWidget("Loading Map"),
@@ -108,9 +108,9 @@ class _LivePlaneMapState extends State<LivePlaneMap>{
           final bounds = await controller.getVisibleRegion();
           if(_cachedBounds == bounds) return;
           _cachedBounds = bounds;
+          // vm.removeMarkers(_markerWidgetsController, markers, bounds);
           await vm.loadPlanes(bounds, false);
-          
-          vm.buildMarkers(_markerWidgetsController);
+          vm.buildMarkers(_markerWidgetsController, markers, bounds);
         },
         markers: markers,
       );
