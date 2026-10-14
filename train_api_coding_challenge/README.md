@@ -2,7 +2,7 @@
 
 WIP
 
-To run the API, it requires an env json to be setup formatted as
+To run the API, it requires an env.json to be setup formatted and stored in same file area as pubspec.yaml. Json file formatting should be formatted as below.
 
 {
     "OPENSKY_CLIENT_ID": "CLIENT_ID",
