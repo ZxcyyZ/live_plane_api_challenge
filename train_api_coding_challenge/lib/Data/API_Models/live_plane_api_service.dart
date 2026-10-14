@@ -1,92 +1,9 @@
-import 'dart:io';
+import 'dart:convert';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:http/http.dart' as http;
-
-class PlaneData{
-  final DateTime time;
-  final List<PlaneStates> states;
-
-  PlaneData({
-    required this.time,
-    required this.states,
-  });
-
-  factory PlaneData.fromJson(Map<String, dynamic> json){
-    final rawStates = json['states'] as List<dynamic>;
-    return PlaneData(
-      time: DateTime.fromMillisecondsSinceEpoch((json['time'] as int ) * 1000),
-      states: rawStates
-          .map((e) => PlaneStates.fromList(e as List<dynamic>))
-          .toList()
-    );
-  }
-}
-
-class PlaneStates{
-  final String icao24;
-  final String callsign;
-  final String orgin_country;
-  final int time_position;
-  final int last_contact;
-  final double longitude;
-  final double latitude;
-  final double baro_altitude;
-  final bool on_ground;
-  final double velocity;
-  final double true_track;
-  final double vertical_rate;
-  final List<int> sensors;
-  final double geo_altitude;
-  final String squawk;
-  final bool spi;
-  final int position_source;
-  final int category;
+import 'package:plane_api_coding_challenge/Data/Repositories/live_plane_repository.dart';
 
 
-  PlaneStates({
-    required this.icao24,
-    required this.callsign,
-    required this.orgin_country,
-    required this.time_position,
-    required this.last_contact,
-    required this.longitude,
-    required this.latitude,
-    required this.baro_altitude,
-    required this.on_ground,
-    required this.velocity,
-    required this.true_track,
-    required this.vertical_rate,
-    required this.sensors,
-    required this.geo_altitude,
-    required this.squawk,
-    required this.spi,
-    required this.position_source,
-    required this.category,
-  });
-
-  factory PlaneStates.fromList(List<dynamic> states){
-    return PlaneStates(
-      icao24: states[0] as String,
-      callsign: states as String,
-      orgin_country: states[2] as String,
-      time_position: states[3] as int,
-      last_contact: states[4] as int,
-      longitude: states[5] as double,
-      latitude: states as double,
-      baro_altitude: states[7] as double,
-      on_ground: states[8] as bool,
-      velocity: states[9] as double,
-      true_track: states[10] as double,
-      vertical_rate: states[11] as double,
-      sensors:  states[12] as List<int>,
-      geo_altitude: states[13] as double,
-      squawk: states[14] as String,
-      spi: states[15] as bool,
-      position_source: states[16] as int,
-      category: states[17] as int
-    );
-  }
-  
-}
 
 class LivePlaneApiService {
   final http.Client _client;
@@ -95,37 +12,63 @@ class LivePlaneApiService {
     this._client,
   );
 
+  static const String auth = "https://auth.opensky-network.org/auth/realms/opensky-network/protocol/openid-connect/token";
   static const String BASEURL = "https://opensky-network.org/api";
   static const List<String> APIOPTIONS = ["/states/all"];
-  
+  static const String clientId = String.fromEnvironment('OPENSKY_CLIENT_ID');
+  static const String clientSecret = String.fromEnvironment('OPENSKY_CLIENT_SECRET');
 
+  Future<PlaneData> fetchPlanes(LatLngBounds bounds) async{
+    final token = await _getToken();
 
+    try {
+      final response = await _client.get(
+        Uri.parse(
+          '$BASEURL${APIOPTIONS[0]}?lamin=${
+            bounds.southwest.latitude
+            }&lomin=${
+              bounds.southwest.longitude
+            }&lamax=${
+              bounds.northeast.latitude
+            }&lomax=${bounds.northeast.longitude}'),
+        headers: {
+          'Authorization': 'Bearer $token',
+        },
+      ).timeout(const Duration(seconds: 15));
+
+      if (response.statusCode == 200) {
+        final json = jsonDecode(response.body) as Map<String, dynamic>;
+        return PlaneData.fromJson(json);
+      } else {
+        throw Exception('Failed to load planes: ${response.statusCode}');
+      }
+    } catch (e) {
+      throw Exception('Failed to hit endpoint: $e');
+    }
+  }
+
+  Future<String> _getToken() async{
+   try {
+     final response = await _client.post(
+      Uri.parse(auth),
+      body: {
+        "grant_type": "client_credentials",
+        "client_id": clientId,
+        "client_secret": clientSecret,
+      },
+    );
+
+    if (response.statusCode == 200){
+      final responseData = jsonDecode(response.body);
+      final key = responseData["access_token"];
+      return key;
+    } else {
+      throw Exception("Failed to retrieve token ");
+    }
+   } catch (e){
+      throw Exception("Error Found: $e");
+   }
+  }
 
 }
 
-class MockPlaneApiService {
-  final Map<String, dynamic> MockData = {
-    "time": 1791910047,
-    "states": [
-      [
-        "e8027e",
-        "LPE2015 ",
-        "Chile",
-        1791910046,
-        1791910046,
-        -78.8373,
-        -9.3875,
-        10972.8,
-        false,
-        226.85,
-        333.32,
-        -0.33,
-        null,
-        11711.94,
-        null,
-        false,
-        0
-      ],
-    ],
-  };
-}

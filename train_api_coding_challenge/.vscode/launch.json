@@ -8,7 +8,10 @@
         {
             "name": "plane_api_coding_challenge",
             "request": "launch",
-            "type": "dart"
+            "type": "dart",
+            "args": [
+                "--dart-define-from-file=env.json"
+            ]
         },
         {
             "name": "plane_api_coding_challenge (profile mode)",

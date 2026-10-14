@@ -18,7 +18,7 @@ class PlaneAppScaffold extends StatelessWidget {
       appBar: PlaneAppTitle(
         appTitle: appTitle,
       ),
-      backgroundColor: Colors.black12,
+      backgroundColor: Colors.white,
       body: widgetBody,
       // bottomNavigationBar: , -- TO DO, add as param option for main page
     );
