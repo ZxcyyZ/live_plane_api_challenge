@@ -1,6 +1,5 @@
-# live_train_api_challenge
+# plane_api_coding_challenge
 
-plane_api_coding_challenge
 WIP
 
 To run the API, it requires an env.json to be setup formatted and stored in same file area as pubspec.yaml. Json file formatting should be formatted as below.
