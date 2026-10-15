@@ -1,16 +1,14 @@
 # plane_api_coding_challenge
 
-A new Flutter project.
+WIP
 
-## Getting Started
+To run the API, it requires an env.json to be setup formatted and stored in same file area as pubspec.yaml. Json file formatting should be formatted as below.
 
-This project is a starting point for a Flutter application.
+{
+    "OPENSKY_CLIENT_ID": "CLIENT_ID",
+    "OPENSKY_CLIENT_SECRET": "SECRET"
+}
 
-A few resources to get you started if this is your first Flutter project:
+Can be found by logging into and creating an account by - https://openskynetwork.github.io/opensky-api/rest.html
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+A client Id will be provided on the dashboard, then the secret is a json you can download.
